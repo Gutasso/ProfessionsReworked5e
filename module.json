@@ -1,0 +1,45 @@
+{
+  "$schema": "https://foundryvtt.com/api/schemas/module.json",
+  "id": "professions-reworked-5e",
+  "title": "Profissões Dinâmicas: Ferramentas Revisitadas",
+  "description": "Um sistema prático e dinâmico de profissões para D&D 5e, focado em projetos, variabilidade de resultados e progressão concreta.",
+  "version": "1.0.0",
+  "library": false,
+  "manifest": "", 
+  "download": "",
+  "authors": [
+    {
+      "name": "Gustavo",
+      "discord": ""
+    }
+  ],
+  "compatibility": {
+    "minimum": "11",
+    "verified": "12",
+    "maximum": "12"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "dnd5e",
+        "type": "system",
+        "compatibility": {
+          "minimum": "3.0.0"
+        }
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/main.js"
+  ],
+  "styles": [
+    "css/profissoes.css"
+  ],
+  "languages": [
+    {
+      "lang": "pt-BR",
+      "name": "Português (Brasil)",
+      "path": "lang/pt-BR.json"
+    }
+  ]
+}
