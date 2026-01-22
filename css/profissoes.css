@@ -1,0 +1,146 @@
+/* Layout Geral */
+.professions-tab {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.professions-header h2 {
+    border-bottom: 2px solid #7a7971;
+    font-family: "Modesto Condensed", "Palatino Linotype", serif;
+    font-size: 28px;
+    color: #4b0082;
+    margin: 0 0 10px 0;
+}
+
+.section-title {
+    font-family: "Roboto", sans-serif;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #c9c7b1;
+    color: #4b4a44;
+    text-transform: uppercase;
+}
+
+/* --- NOVO: Formulário de Criação --- */
+.project-form {
+    display: flex;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 10px;
+    border-radius: 4px;
+    align-items: center;
+}
+
+.project-form input[type="text"] {
+    flex: 2;
+    height: 28px;
+}
+
+.project-form select {
+    flex: 1;
+    height: 28px;
+}
+
+.create-project-btn {
+    flex: 0.5;
+    white-space: nowrap;
+    background: #4b4a44 !important;
+    color: white !important;
+}
+
+.create-project-btn:hover {
+    background: #4b0082 !important;
+}
+
+/* --- NOVO: Lista de Projetos --- */
+.active-projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.project-card {
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid #c9c7b1;
+    border-radius: 5px;
+    padding: 10px;
+    position: relative;
+}
+
+.project-header-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.project-complexity {
+    font-size: 11px;
+    font-style: italic;
+    color: #7a7971;
+}
+
+/* Botão de Excluir (Lixeira) */
+.delete-project {
+    color: #a02e2e;
+    cursor: pointer;
+    font-size: 14px;
+    transition: transform 0.2s;
+}
+
+.delete-project:hover {
+    color: #ff0000;
+    transform: scale(1.2);
+}
+
+/* Barra de Progresso */
+.progress-container {
+    position: relative;
+    height: 20px;
+    background: #d8d7d1;
+    border: 1px solid #7a7971;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4b0082 0%, #6a5acd 100%);
+    transition: width 0.5s ease-in-out;
+}
+
+.progress-text {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 0;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px black;
+    line-height: 20px;
+}
+
+/* Estado Vazio */
+.empty-state {
+    text-align: center;
+    font-style: italic;
+    color: #7a7971;
+    padding: 10px;
+}
+
+/* Cozinheiro */
+.cooking-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+}
+
+.cooking-buttons button {
+    font-size: 11px;
+    padding: 4px;
+}

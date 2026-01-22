@@ -18,6 +18,7 @@ export const VALOR_ACERTOS = {
     "GRANDE_SUCESSO": 2,
     "ALTO_SUCESSO": 2,
     "MEDIO_SUCESSO": 1,
+    "SUCESSO": 1,
     "BAIXO_SUCESSO": 1,
     "MEDIA": 0.5,
     "BAIXA_FALHA": 0.5,
@@ -25,4 +26,76 @@ export const VALOR_ACERTOS = {
     "MEDIA_FALHA": 0.25,
     "ALTA_FALHA": 0,
     "GRANDE_FALHA": 0
+};
+export const COZINHEIRO_CONFIG = {
+    "BAIXA_QUALIDADE": {
+        dificuldade: "Fácil",
+        resultados: {
+            "GRANDE_SUCESSO": "Comfortable",
+            "ALTO_SUCESSO":   "Comfortable",
+            "MEDIO_SUCESSO":  "Modest",
+            "SUCESSO":        "Modest",
+            "BAIXO_SUCESSO":  "Poor",
+            "MEDIA":          "Poor",
+            "BAIXA_FALHA":    "Poor",
+            "FALHA":          "Poor",
+            "MEDIA_FALHA":    "Poor",
+            "ALTA_FALHA":     "Squalid",
+            "GRANDE_FALHA":   "Squalid"
+        }
+    },
+    "ALTA_QUALIDADE": {
+        dificuldade: "Médio",
+        resultados: {
+            "GRANDE_SUCESSO": "Aristocrat",
+            "ALTO_SUCESSO":   "Aristocrat",
+            "MEDIO_SUCESSO":  "Wealthy",
+            "SUCESSO":        "Wealthy",
+            "BAIXO_SUCESSO":  "Comfortable",
+            "MEDIA":          "Comfortable",
+            "BAIXA_FALHA":    "Comfortable",
+            "FALHA":          "Comfortable",
+            "MEDIA_FALHA":    "Comfortable",
+            "ALTA_FALHA":     "Modest",
+            "GRANDE_FALHA":   "Modest"
+        }
+    },
+    "BANQUETE": {
+        dificuldade: "Muito Difícil",
+        resultados: {
+            "GRANDE_SUCESSO": "4d10 + @level",
+            "ALTO_SUCESSO":   "4d10 + @level",
+            "MEDIO_SUCESSO":  "3d10 + ceil(@level / 2)",
+            "SUCESSO":        "3d10 + ceil(@level / 2)",
+            "BAIXO_SUCESSO":  "3d10 + ceil(@level / 2)",
+            "MEDIA":          "2d10 + ceil(@level / 2)",
+            "BAIXA_FALHA":    "2d10 + ceil(@level / 2)",
+            "FALHA":          "1d10 + ceil(@level / 2)",
+            "MEDIA_FALHA":    "1d10 + ceil(@level / 2)",
+            "ALTA_FALHA":     "0",
+            "GRANDE_FALHA":   "0"
+        }
+    }
+};
+/**
+ * Definição dos objetivos de projeto (Hits necessários)
+ * Baseado na complexidade definida no seu sistema.
+ */
+export const COMPLEXIDADE_PROJETO = {
+    "Simples": {
+        acertosNecessarios: 2,
+        descricao: "Um item básico ou reparo simples."
+    },
+    "Moderadamente Complexo": {
+        acertosNecessarios: 4,
+        descricao: "Um item de qualidade padrão ou trabalho detalhado."
+    },
+    "Complexo": {
+        acertosNecessarios: 8,
+        descricao: "Um item magistral ou estrutura técnica."
+    },
+    "Muito Complexo": {
+        acertosNecessarios: 16,
+        descricao: "Uma obra lendária ou engenharia avançada."
+    }
 };

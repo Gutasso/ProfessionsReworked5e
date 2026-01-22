@@ -18,8 +18,8 @@
     "verified": "12",
     "maximum": "12"
   },
-  "manifest": "https://raw.githubusercontent.com/Gutasso/ProfessionsReworked5e/main/module.json",
-  "download": "https://github.com/Gutasso/ProfessionsReworked5e/archive/refs/heads/main.zip",
+  "manifest": "https://raw.githubusercontent.com/Gutasso/professions-reworked-5e/main/module.json",
+  "download": "https://github.com/Gutasso/professions-reworked-5e/archive/refs/heads/main.zip",
   "relationships": {
     "systems": [
       {

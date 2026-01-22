@@ -1,0 +1,70 @@
+<section class="tab professions-tab" data-group="primary" data-tab="professions">
+    <div class="professions-container">
+        <header class="professions-header">
+            <h2><i class="fas fa-hammer"></i> {{localize "PROFESSIONS.Title"}}</h2>
+        </header>
+
+        {{!-- Formulário para Novo Projeto --}}
+        <div class="new-project-section">
+            <h3 class="section-title">Criar Novo Projeto</h3>
+            <div class="project-form">
+                <input type="text" class="new-project-name" placeholder="Nome do item (ex: Adaga de Prata)">
+                
+                <select class="new-project-complexity">
+                    <option value="Simples">Simples (2 acertos)</option>
+                    <option value="Moderadamente Complexo">Moderado (4 acertos)</option>
+                    <option value="Complexo">Complexo (8 acertos)</option>
+                    <option value="Muito Complexo">Muito Complexo (16 acertos)</option>
+                </select>
+
+                <button type="button" class="create-project-btn">
+                    <i class="fas fa-plus"></i> Iniciar Projeto
+                </button>
+            </div>
+        </div>
+
+        <hr>
+
+        {{!-- Lista de Projetos Dinâmica --}}
+        <div class="active-projects-list">
+            <h3 class="section-title">Projetos em Andamento</h3>
+            
+            {{#each projetos}}
+            <div class="project-card" data-project-id="{{@index}}">
+                <div class="project-header-info">
+                    <span class="project-name"><strong>{{this.nome}}</strong></span>
+                    <span class="project-complexity">{{this.complexidade}}</span>
+                    <a class="delete-project" title="Excluir Projeto"><i class="fas fa-trash"></i></a>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-fill" style="width: {{this.porcentagem}}%;"></div>
+                    <div class="progress-text">
+                        {{this.acertosAtuais}} / {{this.totalNecessario}} Acertos
+                    </div>
+                </div>
+
+                <div class="project-actions">
+                    <button type="button" class="roll-profession-test" data-project-id="{{@index}}">
+                        <i class="fas fa-dice-d20"></i> Trabalhar
+                    </button>
+                </div>
+            </div>
+            {{else}}
+            <p class="empty-state">Nenhum projeto ativo. Crie um acima!</p>
+            {{/each}}
+        </div>
+
+        <hr>
+
+        {{!-- Cozinheiro (continua igual) --}}
+        <div class="cooking-section">
+            <h3 class="section-title">Cozinheiro: Preparar Refeição</h3>
+            <div class="cooking-buttons">
+                <button type="button" class="cook-test" data-type="PADRAO">Refeição Simples</button>
+                <button type="button" class="cook-test" data-type="ALTA_QUALIDADE">Refeição Fina</button>
+                <button type="button" class="cook-test" data-type="BANQUETE">Banquete</button>
+            </div>
+        </div>
+    </div>
+</section>
