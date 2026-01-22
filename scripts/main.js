@@ -8,95 +8,98 @@ Hooks.once("init", () => {
 Hooks.on("renderActorSheet5eCharacter", async (app, html, data) => {
     const actor = app.actor;
 
-    // 1. Dados do Projeto Ativo (Flags)
-    const projetoAtivo = actor.getFlag("professions-reworked-5e", "projetoAtivo") || {
-        nome: "Nenhum Projeto",
-        complexidade: "Simples",
-        acertosAtuais: 0
-    };
+    // 1. BUSCAR LISTA DE PROJETOS (ARRAY)
+    // Se não existir, iniciamos um array vazio []
+    let listaProjetos = actor.getFlag("professions-reworked-5e", "projetos") || [];
 
-    const configComplexidade = COMPLEXIDADE_PROJETO[projetoAtivo.complexidade];
-    const totalNecessario = configComplexidade.acertosNecessarios;
-    const porcentagem = Math.min((projetoAtivo.acertosAtuais / totalNecessario) * 100, 100);
+    // 2. PREPARAR DADOS PARA O HTML
+    // Calculamos a porcentagem de cada projeto antes de enviar para o .hbs
+    const projetosRender = listaProjetos.map(p => {
+        const config = COMPLEXIDADE_PROJETO[p.complexidade];
+        return {
+            ...p,
+            totalNecessario: config.acertosNecessarios,
+            porcentagem: Math.min((p.acertosAtuais / config.acertosNecessarios) * 100, 100)
+        };
+    });
 
-    const profData = {
-        projeto: projetoAtivo,
-        totalNecessario: totalNecessario,
-        porcentagem: porcentagem
-    };
-
-    // 2. Injetar a Aba
+    // Injetar a aba
     const tabs = html.find('.sheet-navigation.tabs');
     tabs.append($('<a class="item" data-tab="professions">Profissões</a>'));
 
+    // Renderizar passando a lista de projetos
     const templatePath = "modules/professions-reworked-5e/templates/professions-tab.hbs";
-    const myTabHtml = await renderTemplate(templatePath, profData);
+    const myTabHtml = await renderTemplate(templatePath, { projetos: projetosRender });
     html.find('.sheet-body').append(myTabHtml);
 
-   // 3. OUVINTE: Realizar Trabalho (Projetos)
-    html.find('.roll-profession-test').click(async (ev) => {
-        ev.preventDefault();
+    // --- OUVINTES DE EVENTO ---
 
-        // Chamamos o diálogo de rolagem oficial do sistema D&D 5e
-        const rolagem = await dnd5e.dice.d20Roll({
-            parts: ["@mod", "@prof"], // Modificador de Atributo + Proficiência
-            data: actor.getRollData(), // Pega os dados automáticos do personagem
-            title: `Teste de Profissão: ${projetoAtivo.nome}`,
-            flavor: `Trabalhando em: ${projetoAtivo.nome}`,
-            chooseModifier: true // PERMITE escolher For, Des, Int, etc. no diálogo!
-        });
+    // A. CRIAR NOVO PROJETO
+    html.find('.create-project-btn').click(async (ev) => {
+        const nome = html.find('.new-project-name').val();
+        const complexidade = html.find('.new-project-complexity').val();
 
-        // Se o jogador fechar o diálogo sem rolar, interrompemos aqui
-        if (!rolagem) return;
+        if (!nome) return ui.notifications.warn("Dê um nome ao seu projeto!");
 
-        const resultado = calcularResultado(rolagem.total, configComplexidade.dificuldade);
-        const novoTotal = projetoAtivo.acertosAtuais + resultado.acertos;
+        const novoProjeto = {
+            nome: nome,
+            complexidade: complexidade,
+            acertosAtuais: 0
+        };
 
-        await actor.setFlag("professions-reworked-5e", "projetoAtivo", {
-            ...projetoAtivo,
-            acertosAtuais: novoTotal
-        });
-
-        ui.notifications.info(`Você obteve ${resultado.acertos} acertos!`);
+        listaProjetos.push(novoProjeto);
+        await actor.setFlag("professions-reworked-5e", "projetos", listaProjetos);
+        ui.notifications.info(`Projeto "${nome}" iniciado!`);
     });
 
-    // 4. OUVINTE: Cozinheiro (Refeições)
-    html.find('.cook-test').click(async (ev) => {
-        ev.preventDefault();
-        const tipoPreparo = ev.currentTarget.dataset.type;
+    // B. EXCLUIR PROJETO
+    html.find('.delete-project').click(async (ev) => {
+        const index = ev.currentTarget.closest('.project-card').dataset.projectId;
+        listaProjetos.splice(index, 1); // Remove o item do array
+        await actor.setFlag("professions-reworked-5e", "projetos", listaProjetos);
+    });
 
-        // Abrimos o diálogo oficial para o Cozinheiro também
+    // C. TRABALHAR EM UM PROJETO
+    html.find('.roll-profession-test').click(async (ev) => {
+        const index = ev.currentTarget.dataset.projectId;
+        const projeto = listaProjetos[index];
+        const config = COMPLEXIDADE_PROJETO[projeto.complexidade];
+
         const rolagem = await dnd5e.dice.d20Roll({
             parts: ["@mod", "@prof"],
             data: actor.getRollData(),
-            title: `Teste de Cozinheiro: ${tipoPreparo}`,
+            title: `Trabalhando em: ${projeto.nome}`,
             chooseModifier: true
         });
 
         if (!rolagem) return;
 
+        const resultado = calcularResultado(rolagem.total, config.dificuldade);
+        projeto.acertosAtuais += resultado.acertos;
+
+        await actor.setFlag("professions-reworked-5e", "projetos", listaProjetos);
+    });
+
+    // D. COZINHEIRO (Lógica permanece a mesma)
+    html.find('.cook-test').click(async (ev) => {
+        const tipoPreparo = ev.currentTarget.dataset.type;
+        const rolagem = await dnd5e.dice.d20Roll({
+            parts: ["@mod", "@prof"],
+            data: actor.getRollData(),
+            title: `Cozinhar: ${tipoPreparo}`,
+            chooseModifier: true
+        });
+
+        if (!rolagem) return;
         const resultadoCozinha = processarCozinheiro(rolagem.total, tipoPreparo);
 
         if (tipoPreparo === "BANQUETE" && resultadoCozinha.efeitoFinal !== "0") {
             let rollPV = new Roll(resultadoCozinha.efeitoFinal, actor.getRollData());
             await rollPV.evaluate();
-            rollPV.toMessage({
-                flavor: `<b>Banquete:</b> ${resultadoCozinha.resultadoMatematico}<br>PV Temporários concedidos!`
-            });
+            rollPV.toMessage({ flavor: `<b>Banquete:</b> PV Temporários!` });
         } else {
-            ChatMessage.create({
-                user: game.user._id,
-                speaker: ChatMessage.getSpeaker({actor: actor}),
-                content: `
-                    <div class="dice-roll dnd5e">
-                        <div class="dice-result">
-                            <div class="dice-formula">Teste de Cozinheiro (${tipoPreparo})</div>
-                            <div class="dice-total">${rolagem.total}</div>
-                            <div class="dice-tooltip">Resultado: ${resultadoCozinha.resultadoMatematico}</div>
-                            <h4 class="dice-total" style="color: #4b0082">Qualidade: ${resultadoCozinha.efeitoFinal}</h4>
-                        </div>
-                    </div>`
-            });
+            // Mensagem de qualidade...
+            ui.notifications.info(`Qualidade da Refeição: ${resultadoCozinha.efeitoFinal}`);
         }
     });
 });
