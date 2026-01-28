@@ -1,16 +1,15 @@
-import { TABELA_DIFICULTADE, VALOR_ACERTOS, COZINHEIRO_CONFIG } from './constants.js';
+import { TABELA_DIFICULDADE, VALOR_ACERTOS, COZINHEIRO_CONFIG } from './constants.js';
 
 /**
  * Determina qual o nível de sucesso atingido e quantos acertos ele gera.
  */
 export function calcularResultado(total, dificuldade) {
-    const limiares = TABELA_DIFICULTADE[dificuldade];
+    const limiares = TABELA_DIFICULDADE[dificuldade];
     
     if (!limiares) return { resultado: "GRANDE_FALHA", acertos: 0 };
 
     let resultado;
 
-    // A cascata de comparação continua igual para definir a string do resultado
     if (total >= limiares.g_sucesso)      resultado = "GRANDE_SUCESSO";
     else if (total >= limiares.a_sucesso) resultado = "ALTO_SUCESSO";
     else if (total >= limiares.m_sucesso) resultado = "MEDIO_SUCESSO";
@@ -23,25 +22,31 @@ export function calcularResultado(total, dificuldade) {
     else if (total >= limiares.a_falha)   resultado = "ALTA_FALHA";
     else                                  resultado = "GRANDE_FALHA";
 
-    // Agora é apenas uma busca simples:
     return {
         resultado: resultado,
         acertos: VALOR_ACERTOS[resultado] || 0
     };
-};
+}
+
+/**
+ * Processa a rolagem do Cozinheiro.
+ */
 export function processarCozinheiro(total, tipoPreparo) {
     const config = COZINHEIRO_CONFIG[tipoPreparo];
     
-    // 1. A função busca automaticamente a dificuldade (Fácil, Médio ou Muito Difícil)
-    const base = calcularResultado(total, config.dificuldade);
+    // Proteção caso o tipoPreparo venha errado do HTML
+    if (!config) {
+        console.error(`Profissões Dinâmicas | Tipo de preparo não encontrado: ${tipoPreparo}`);
+        return { efeitoFinal: "Erro", resultadoMatematico: "FALHA" };
+    }
     
-    // 2. Busca o resultado na tabela de strings (qualidade ou bônus)
+    const base = calcularResultado(total, config.dificuldade);
     const efeito = config.resultados[base.resultado];
 
     return {
         preparo: tipoPreparo,
         dificuldadeUsada: config.dificuldade,
-        resultadoMatematico: base.resultado, // Ex: "ALTO_SUCESSO"
-        efeitoFinal: efeito,                 // Ex: "Aristocrat" ou "Bônus Maior"
+        resultadoMatematico: base.resultado,
+        efeitoFinal: efeito
     };
 }

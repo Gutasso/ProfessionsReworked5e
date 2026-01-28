@@ -1,146 +1,475 @@
-/* Layout Geral */
+/* --- LAYOUT GERAL --- */
 .professions-tab {
-    padding: 15px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 15px;
+    height: 100%;
+    overflow-y: auto; /* Garante scroll interno se necessário */
 }
 
-.professions-header h2 {
-    border-bottom: 2px solid #7a7971;
-    font-family: "Modesto Condensed", "Palatino Linotype", serif;
-    font-size: 28px;
-    color: #4b0082;
-    margin: 0 0 10px 0;
-}
-
-.section-title {
-    font-family: "Roboto", sans-serif;
-    font-weight: bold;
-    font-size: 14px;
-    margin-bottom: 8px;
-    border-bottom: 1px solid #c9c7b1;
-    color: #4b4a44;
-    text-transform: uppercase;
-}
-
-/* --- NOVO: Formulário de Criação --- */
-.project-form {
+/* Seção de Gestão (Topo) */
+.management-header {
     display: flex;
-    gap: 8px;
-    background: rgba(0, 0, 0, 0.05);
+    gap: 10px;
     padding: 10px;
-    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
     align-items: center;
 }
 
-.project-form input[type="text"] {
-    flex: 2;
+.management-header select { 
+    flex: 2; 
     height: 28px;
 }
 
-.project-form select {
-    flex: 1;
+.add-profession-btn { 
+    flex: 1; 
+    background: #4b4a44 !important; 
+    color: #d8d8d2 !important; 
+    font-weight: bold; 
+    border: 1px solid #330066;
     height: 28px;
+    line-height: 26px; /* Centraliza verticalmente */
 }
 
-.create-project-btn {
-    flex: 0.5;
-    white-space: nowrap;
-    background: #4b4a44 !important;
-    color: white !important;
+/* Seções de Profissão */
+.profession-section {
+    border: 1px solid #7a7971;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+/* CABEÇALHO DA PROFISSÃO */
+.prof-header {
+    background: #e8e7e1;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #7a7971;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.prof-header:hover {
+    background: #dcdbd5;
+}
+
+.header-title h3 {
+    margin: 0;
+    font-family: "Modesto Condensed", serif;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #4b0082;
+    border: none; /* Remove bordas padrões do Foundry */
+}
+
+.prof-icon-spacer { 
+    margin-right: 5px; 
+    color: #4b0082; 
+    width: 20px;
+    text-align: center;
+}
+
+.remove-profession {
+    color: #a02e2e;
+    font-size: 16px;
+    padding: 4px;
+    transition: all 0.2s;
+}
+
+.remove-profession:hover {
+    color: #ff0000;
+    text-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
+    transform: scale(1.1);
+}
+
+/* Estado Colapsado */
+.profession-section.is-collapsed .prof-content { display: none; }
+.profession-section.is-collapsed .prof-header { border-bottom: none; }
+.prof-content { padding: 15px; }
+
+/* --- CRIAÇÃO DE PROJETOS --- */
+.project-creation-form {
+    display: flex;
+    flex-wrap: wrap; /* Permite quebrar linha se ficar apertado */
+    gap: 8px;
+    margin-bottom: 15px;
+    align-items: center;
+    background: rgba(0,0,0,0.03);
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.new-project-name { flex: 2; min-width: 120px; }
+.new-project-subtype { flex: 1.5; min-width: 100px; }
+.new-project-complexity, .new-project-rarity { flex: 1; min-width: 90px; }
+.create-project-btn { 
+    flex: 0 0 auto; 
+    background: #d8d8d2 !important; /* Fundo claro para dar contraste */
+    color: #4b4a44 !important;      /* A cor que você pediu */
+    border: 1px solid #999;
+    padding: 0 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
 .create-project-btn:hover {
-    background: #4b0082 !important;
+    background: #d0d0d0 !important;
+    color: #000 !important;
+    box-shadow: 0 0 5px rgba(0,0,0,0.2);
 }
 
-/* --- NOVO: Lista de Projetos --- */
-.active-projects-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+/* --- CARDS DE PROJETO --- */
+.projects-list { display: flex; flex-direction: column; gap: 10px; }
+
+.project-card { 
+    background: white; 
+    border: 1px solid #c9c7b1; 
+    padding: 10px; 
+    border-radius: 4px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 5px; 
+    transition: box-shadow 0.2s;
 }
 
-.project-card {
-    background: rgba(255, 255, 255, 0.5);
-    border: 1px solid #c9c7b1;
-    border-radius: 5px;
-    padding: 10px;
-    position: relative;
+.project-card:hover {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
 }
 
+/* Header do Card */
 .project-header-info {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
+.project-left { display: flex; align-items: center; gap: 8px; }
+.project-name { font-size: 13px; color: #191813; }
+.delete-project { color: #a02e2e; cursor: pointer; }
 
-.project-complexity {
-    font-size: 11px;
-    font-style: italic;
-    color: #7a7971;
+/* Botão de Editar */
+.edit-project-name {
+    color: #999; font-size: 12px; cursor: pointer; transition: all 0.2s;
 }
-
-/* Botão de Excluir (Lixeira) */
-.delete-project {
-    color: #a02e2e;
-    cursor: pointer;
-    font-size: 14px;
-    transition: transform 0.2s;
-}
-
-.delete-project:hover {
-    color: #ff0000;
-    transform: scale(1.2);
-}
+.edit-project-name:hover { color: #4b0082; transform: scale(1.1); }
 
 /* Barra de Progresso */
-.progress-container {
-    position: relative;
-    height: 20px;
-    background: #d8d7d1;
-    border: 1px solid #7a7971;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 8px;
+.progress-container { 
+    height: 14px; 
+    background: #ddd; 
+    border-radius: 7px; 
+    overflow: hidden; 
+    position: relative; 
+    border: 1px solid #999; 
+    margin-bottom: 5px;
+}
+.progress-fill { 
+    height: 100%; 
+    background: linear-gradient(90deg, #6a0dad, #8a2be2); 
+    transition: width 0.4s ease-in-out; 
+}
+.progress-text { 
+    position: absolute; width: 100%; top: 0; left: 0; text-align: center; 
+    font-size: 10px; line-height: 14px; color: white; 
+    text-shadow: 1px 1px 2px black; font-weight: bold; 
 }
 
-.progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #4b0082 0%, #6a5acd 100%);
-    transition: width 0.5s ease-in-out;
+/* --- CONTROLES DE ROLAGEM (Projetos) --- */
+.roll-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 5px;
+    padding-top: 8px;
+    border-top: 1px dashed #ccc;
 }
 
-.progress-text {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    top: 0;
-    color: white;
+/* Dropdown de Atributo (Largura Fixa) */
+.roll-attribute {
+    flex: 0 0 110px; 
+    width: 110px;
+    height: 26px;
     font-size: 11px;
-    font-weight: bold;
-    text-shadow: 1px 1px 1px black;
-    line-height: 20px;
 }
 
-/* Estado Vazio */
-.empty-state {
+/* Input de Bônus (Cresce) */
+.roll-bonus {
+    flex: 1; 
+    width: auto;
+    min-width: 40px;
+    height: 26px !important;
+    font-size: 11px;
     text-align: center;
-    font-style: italic;
-    color: #7a7971;
-    padding: 10px;
 }
 
-/* Cozinheiro */
-.cooking-buttons {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+/* Wrapper da Vantagem */
+.advantage-wrapper {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
     gap: 5px;
 }
-
-.cooking-buttons button {
+.advantage-label-text {
     font-size: 11px;
-    padding: 4px;
+    font-weight: bold;
+    color: #4b4a44;
+}
+
+/* Botão Trabalhar */
+.roll-profession-test {
+    flex: 0 0 auto;
+    width: auto !important;
+    height: 26px;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+    border: 1px solid #7a7971;
+}
+
+/* --- SELETOR DE FERRAMENTA --- */
+.tool-selector-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding: 5px;
+    background: rgba(0,0,0,0.03);
+    border-radius: 4px;
+    font-size: 12px;
+}
+.profession-tool-select { flex: 1; height: 24px; font-size: 12px; }
+
+/* --- COZINHEIRO --- */
+.cooking-buttons { 
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 10px; 
+    margin-bottom: 10px;
+}
+
+.cook-controls {
+    display: flex; 
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    border-top: none;
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 8px;
+}
+
+.cook-attribute {
+    flex: 0 0 110px;
+    height: 26px;
+    font-size: 11px;
+}
+
+.cook-bonus {
+    flex: 1;
+    height: 26px !important;
+    text-align: center;
+    font-size: 11px;
+}
+
+/* Lista de Pratos */
+.cooked-meals-list {
+    margin-top: 15px;
+    border-top: 2px solid #7a7971;
+    padding-top: 10px;
+}
+.cooked-meals-list h4 {
+    margin: 0 0 8px 0;
+    color: #4b0082;
+    border-bottom: none;
+}
+
+.meal-card {
+    background: #fdfdfd;
+    border: 1px solid #d0d0d0;
+    border-left: 4px solid #4b0082; /* Destaque Roxo */
+    padding: 6px 10px;
+    margin-bottom: 6px;
+    border-radius: 3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.meal-info { display: flex; flex-direction: column; }
+.meal-name { font-size: 12px; font-weight: bold; color: #191813; }
+.meal-result { font-size: 11px; color: #666; font-style: italic; }
+.delete-meal { color: #a02e2e; cursor: pointer; font-size: 12px; transition: transform 0.2s; }
+.delete-meal:hover { transform: scale(1.2); }
+.no-meals { font-size: 11px; color: #999; font-style: italic; text-align: center; }
+
+/* --- ESTILOS DE TOGGLE (Checkboxes Ocultos) --- */
+
+/* Containers */
+.toggle-advantage, 
+.toggle-advantage-cook {
+    position: relative;
+    width: 26px;
+    height: 26px;
+}
+
+/* Esconde os Checkboxes (CRUCIAL PARA NÃO APARECER O QUADRADO BRANCO) */
+.adv-checkbox, 
+.cook-adv-checkbox { 
+    display: none; 
+}
+
+/* Estilo do Botão (Label) */
+.adv-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: #e0e0e0;
+    cursor: pointer;
+    border-radius: 3px;
+    border: 1px solid #999;
+    color: #666;
+    transition: all 0.2s;
+    font-size: 14px;
+}
+
+/* --- LÓGICA DE ÍCONES (Vazio vs Cheio) --- */
+
+/* Quando MARCADO, esconde o ícone vazio */
+.adv-checkbox:checked + .adv-label .unchecked-icon,
+.cook-adv-checkbox:checked + .adv-label .unchecked-icon { 
+    display: none; 
+}
+
+/* Quando NÃO MARCADO, esconde o ícone cheio */
+.adv-checkbox:not(:checked) + .adv-label .checked-icon,
+.cook-adv-checkbox:not(:checked) + .adv-label .checked-icon { 
+    display: none; 
+}
+
+/* --- ESTADO ATIVADO (ROXO) --- */
+.adv-checkbox:checked + .adv-label,
+.cook-adv-checkbox:checked + .adv-label {
+    background: #4b0082; 
+    color: white; 
+    border-color: #330066;
+}
+
+.adv-label:hover { filter: brightness(0.95); }
+
+/* Toggle Específico de Armadura de Placas */
+.plate-toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    background: #d8d8d2;
+    border: 1px solid #999;
+    border-radius: 4px;
+    padding: 0 6px;
+    height: 28px; /* Mesma altura dos selects */
+}
+
+.plate-toggle-container label {
+    font-size: 11px;
+    font-weight: bold;
+    color: #4b4a44;
+    cursor: pointer;
+}
+
+.plate-check {
+    margin: 0;
+    cursor: pointer;
+    transform: scale(0.85);
+}
+.new-project-value {
+    flex: 1;
+    min-width: 80px;
+    height: 28px;
+    border: 1px solid #7a7971;
+    border-radius: 4px;
+    padding: 0 5px;
+}
+
+/* Estilos de Gema */
+.project-value {
+    font-size: 11px;
+    background: #e6b80040;
+    padding: 2px 6px;
+    border-radius: 10px;
+    border: 1px solid #daa520;
+    margin-left: 5px;
+    color: #8a6d0b;
+    font-weight: bold;
+}
+
+.project-value.value-broken {
+    background: #555;
+    color: #fff;
+    border-color: #333;
+    text-decoration: line-through;
+}
+
+/* Estado Quebrado */
+.broken-project {
+    background-color: #f0f0f0;
+    border-color: #999;
+}
+
+.fill-broken {
+    background: #555 !important; /* Barra Cinza */
+}
+/* Estado Concluído */
+.fill-completed {
+    background: #1f6e32 !important; /* Verde Sucesso */
+    box-shadow: 0 0 5px #28a745;
+}
+
+/* Ajuste visual para botão desabilitado por conclusão */
+.roll-profession-test:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: #eee;
+}
+
+.card-biome-wrapper {
+    margin-bottom: 5px;
+}
+.card-biome-select {
+    width: 100%;
+    height: 24px;
+    font-size: 11px;
+    border: 1px solid #999;
+    border-radius: 3px;
+    background-color: rgba(255,255,255,0.5);
+}
+
+/* Botão de Texto: Finalizar Rascunho */
+.finish-draft-btn {
+    font-size: 11px;
+    color: #800080; /* Roxo */
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 5px;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+.finish-draft-btn:hover {
+    text-decoration: underline;
+    text-shadow: 0 0 2px rgba(128, 0, 128, 0.3);
+    transform: scale(1.05);
 }
