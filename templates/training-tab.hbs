@@ -1,0 +1,205 @@
+<section class="tab training-tab" data-group="primary" data-tab="training">
+    {{!-- Cabeçalho de Gerenciamento --}}
+    <div class="management-header">
+        <select class="select-new-training">
+            {{#each opcoesTreino}}
+            <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+        <button type="button" class="add-training-btn"><i class="fas fa-plus"></i> Adicionar Treino</button>
+    </div>
+
+    {{!-- Lista de Categorias de Treinamento Ativas --}}
+    {{#each treinamentosAtivos}}
+    <div class="training-section {{#if this.isCollapsed}}is-collapsed{{/if}}" data-type="{{this.nome}}">
+        <header class="training-header">
+            <div class="header-title">
+                <h3>
+                    <i class="fas {{#if this.isCollapsed}}fa-chevron-right{{else}}fa-chevron-down{{/if}} collapse-icon"></i>
+                    <i class="fas {{this.icon}} prof-icon-spacer"></i>
+                    {{this.label}}
+                </h3>
+            </div>
+            <a class="remove-training" title="Remover Categoria"><i class="fas fa-trash"></i></a>
+        </header>
+
+        <div class="training-content">
+            
+            {{!-- CONTEÚDO ESPECÍFICO: PERÍCIA --}}
+            {{#if (eq this.nome "Perícia")}}
+                <div class="project-creation-form">
+                    {{!-- REMOVIDO A DIV FORM-GROUP PARA FICAR IGUAL PROFISSÃO --}}
+                    <label class="training-label">Perícia:</label>
+                    
+                    <select class="new-training-skill">
+                        <option value="" disabled selected>Selecione a Perícia</option>
+                        {{#each ../skillsDisponiveis}}
+                            <option value="{{this.key}}">{{this.label}}</option>
+                        {{/each}}
+                    </select>
+                                       
+                    <button type="button" class="start-skill-training-btn">Iniciar</button>
+                </div>
+            {{/if}}
+
+            {{!-- CONTEÚDO ESPECÍFICO: ATRIBUTO --}}
+            {{#if (eq this.nome "Atributo")}}
+                <div class="project-creation-form">
+                    <label class="training-label">Atributo:</label>
+                    
+                    <select class="new-training-attribute">
+                        <option value="" disabled selected>Selecione</option>
+                        {{#each ../atributosDisponiveis}}
+                            <option value="{{this.value}}">{{this.label}}</option>
+                        {{/each}}
+                    </select>
+                    
+                    <button type="button" class="start-attribute-training-btn">Iniciar</button>
+                </div>
+            {{/if}}
+
+            {{!-- CONTEÚDO ESPECÍFICO: RESISTÊNCIA --}}
+            {{#if (eq this.nome "Resistência")}}
+                <div class="project-creation-form">
+                    <label class="training-label">Atributo:</label>
+                    
+                    <select class="new-training-save">
+                        <option value="" disabled selected>Selecione</option>
+                        {{#each ../savesDisponiveis}}
+                            <option value="{{this.key}}">{{this.label}}</option>
+                        {{/each}}
+                    </select>
+                    
+                    <button type="button" class="start-save-training-btn">Iniciar</button>
+                </div>
+            {{/if}}
+
+            {{!-- CONTEÚDO ESPECÍFICO: TALENTO --}}
+            {{#if (eq this.nome "Talento")}}
+                <div class="project-creation-form">
+                    <label class="training-label">Nome:</label>
+                    {{!-- Input de Texto para nome do Talento --}}
+                    <input type="text" class="new-training-name-feat" placeholder="Ex: Sentinela">
+                    <button type="button" class="start-feat-training-btn">Iniciar</button>
+                </div>
+            {{/if}}
+
+            {{!-- CONTEÚDO ESPECÍFICO: IDIOMA --}}
+            {{#if (eq this.nome "Idioma")}}
+                <div class="project-creation-form">
+                    <label class="training-label">Língua:</label>
+                    
+                    <select class="new-training-language">
+                        <option value="" disabled selected>Selecione</option>
+                        {{#each ../idiomasDisponiveis}}
+                            <option value="{{this}}">{{this}}</option>
+                        {{/each}}
+                    </select>
+                    
+                    <button type="button" class="start-language-training-btn">Iniciar</button>
+                </div>
+            {{/if}}
+
+            {{!-- CONTEÚDO ESPECÍFICO: PROFISSÃO --}}
+            {{#if (eq this.nome "Profissão")}}
+                <div class="project-creation-form">
+                    <label class="training-label">Profissão:</label>
+                    
+                    <select class="new-training-profession-select">
+                        <option value="" disabled selected>Selecione</option>
+                        {{#each ../profissoesDisponiveisTreino}}
+                            <option value="{{this.nome}}">{{this.nome}}</option>
+                        {{/each}}
+                    </select>
+                    
+                    <button type="button" class="start-profession-training-btn">Iniciar</button>
+                </div>
+            {{/if}}
+
+            {{!-- LISTA DE CARDS DE TREINAMENTO --}}
+            <div class="projects-grid">
+                {{#each this.treinos}}
+                <div class="project-card {{#if this.isConcluido}}completed-project{{/if}} training-type-{{this.categoria}}" data-index="{{this._index}}">
+                    
+                    {{!-- Cabeçalho do Card --}}
+                    <div class="card-header">
+                        <div class="project-left">
+                            <span class="project-name">{{this.nome}}</span>
+                            {{!-- Botão de Editar Nome (Novo para Treinos) --}}
+                            <a class="edit-training-name" title="Renomear"><i class="fas fa-pen" style="font-size: 10px; color: #666;"></i></a>
+                        </div>
+                        <div class="card-actions">
+                            <a class="delete-training-card" title="Excluir Treinamento"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+
+                    {{!-- Subtítulo (Info Extra) --}}
+                    <div class="project-details">
+                        <span class="project-subtype">{{this.infoExtra}}</span>
+                    </div>
+
+                    {{!-- Barra de Progresso --}}
+                    <div class="progress-bar-container" title="{{this.acertosAtuais}} / {{this.totalNecessario}} XP">
+                        <div class="progress-bar-fill {{#if this.isConcluido}}fill-completed{{/if}}" style="width: {{this.porcentagem}}%;"></div>
+                        <span class="progress-text">{{this.acertosAtuais}} / {{this.totalNecessario}} XP</span>
+                    </div>
+
+                    {{!-- Controles de Rolagem --}}
+                    <div class="roll-controls">
+                    
+                    {{!-- SELEÇÃO DE ATRIBUTO (Apenas para Talento) --}}
+                        {{#if (eq this.categoria "Talento")}}
+                        <select class="train-attribute-select" title="Atributo do Teste" {{#if this.isConcluido}}disabled{{/if}}>
+                            {{!-- CORREÇÃO AQUI: Removemos o "../" antes de atributosLocais --}}
+                            {{#each this.atributosLocais}}
+                                {{!-- AQUI MANTÉM O "../" pois estamos comparando com o card pai --}}
+                                <option value="{{this.value}}" {{#if (eq this.value ../atributoPadrao)}}selected{{/if}}>{{this.label}}</option>
+                            {{/each}}
+                        </select>
+                        {{/if}}
+                        
+                        {{!-- Vantagem --}}
+                        <div class="advantage-wrapper">
+                            <span class="advantage-label-text">Vantagem:</span>
+                            <div class="toggle-advantage" title="Vantagem Situacional">
+                                <input type="checkbox" id="train-adv-{{this._index}}" class="train-adv-checkbox" {{#if this.usoVantagem}}checked{{/if}} {{#if this.isConcluido}}disabled{{/if}}>
+                                <label for="train-adv-{{this._index}}" class="adv-label">
+                                    <i class="far fa-circle unchecked-icon"></i>
+                                    <i class="fas fa-circle checked-icon"></i>
+                                </label>
+                            </div>
+                        </div>
+
+                        {{!-- Desvantagem --}}
+                        <div class="disadvantage-wrapper">
+                            <span class="advantage-label-text">Desvantagem:</span>
+                            <div class="toggle-disadvantage" title="Desvantagem Situacional">
+                                <input type="checkbox" id="train-disadv-{{this._index}}" class="train-disadv-checkbox" {{#if this.usoDesvantagem}}checked{{/if}} {{#if this.isConcluido}}disabled{{/if}}>
+                                <label for="train-disadv-{{this._index}}" class="disadv-label">
+                                    <i class="far fa-circle unchecked-icon"></i>
+                                    <i class="fas fa-circle checked-icon"></i>
+                                </label>
+                            </div>
+                        </div>
+
+                        {{!-- Bônus --}}
+                        <input type="text" class="train-bonus" placeholder="+0" value="{{this.bonusSituacional}}" title="Bônus" {{#if this.isConcluido}}disabled{{/if}}>
+                        
+                        {{!-- Botão Treinar --}}
+                        <button type="button" class="roll-training-test" 
+                            {{#if this.isConcluido}}disabled style="opacity:0.6; cursor:not-allowed;"{{/if}}>
+                            {{#if this.isConcluido}}
+                                <i class="fas fa-check"></i> Dominado
+                            {{else}}
+                                <i class="fas fa-dumbbell"></i> Treinar
+                            {{/if}}
+                        </button>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+
+        </div>
+    </div>
+    {{/each}}
+</section>

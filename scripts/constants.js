@@ -11,6 +11,15 @@ export const TABELA_DIFICULDADE = {
     "Quase Impossível": { g_sucesso: 50, a_sucesso: 45, m_sucesso: 41, sucesso: 37, b_sucesso: 34, media: 31, b_falha: 29, falha: 27, m_falha: 25, a_falha: 23, g_falha: 21 }
 };
 
+export const TREINAMENTO_CONFIG = {
+    "Atributo": { icon: "fa-dumbbell", label: "Treinamento de Atributo" },
+    "Perícia":  { icon: "fa-book-reader", label: "Treinamento de Perícia" },
+    "Talento":  { icon: "fa-star", label: "Treinamento de Talento" },
+    "Profissão":{ icon: "fa-tools", label: "Treinamento de Profissão" },
+    "Idioma":   { icon: "fa-language", label: "Estudo de Idioma" },
+    "Resistência": { icon: "fa-shield-alt", label: "Treino de Resistência" }
+};
+
 /**
  * Tabela de Profissões e Ferramentas
  * Mapeia cada profissão às ferramentas do sistema D&D 5e e tipos de itens.
@@ -24,13 +33,24 @@ export const PROFISSOES_CONFIG = {
     "Engenheiro":  { ferramenta: "tinker",     subTipos: ["Mecanismo", "Mecanismo Improvisado", "Conserto", "Preparo para Encantamento"] },
     "Escriba":     { ferramenta: "calligrapher", subTipos: ["Cópia de Texto", "Obra de Arte", "Escrita de Livro", "Pergaminho de Magia"] },
     "Ferreiro":    { ferramenta: "smith",      subTipos: ["Item de Aventureiro", "Armadura de Metal", "Arma de Metal", "Conserto", "Preparo para Encantamento" ] },
-    "Herbalista":  { ferramenta: "herbalist",  subTipos: ["Temperos e Especiarias", "Tintura Mundana", "Erva de Poção", "Tintura Mágica"] },
+    "Herbalista":  { ferramenta: "herb",  subTipos: ["Temperos e Especiarias", "Tintura Mundana", "Erva de Poção", "Tintura Mágica"] },
     "Joalheiro":   { ferramenta: "jeweler",    subTipos: ["Bijuteria", "Gema Lapidada", "Encrustar Gemas para Encantamento"] },
     "Oleiro":      { ferramenta: "potter",     subTipos: ["Item de Aventureiro de Argila", "Item de Aventureiro de Vidro", "Peça de Argila", "Peça de Vidro", "Preparo para Encantamento"] },
     "Pedreiro":    { ferramenta: "mason",      subTipos: ["Peça de Pedra", "Preparo para Encantamento"] },
-    "Sicário":     { ferramenta: "poisoner",   subTipos: ["Veneno Básico", "Veneno Avançado", "Veneno de Dragão Verde", "Coleta de Veneno de Monstro", "Coleta de Erva Venenosa"] },
+    "Sicário":     { ferramenta: "pois",   subTipos: ["Veneno Básico", "Veneno Avançado", "Coleta de Veneno de Monstro", "Coleta de Erva Venenosa"] },
     "Tecelão":     { ferramenta: "weaver",     subTipos: ["Item de Aventureiro", "Peça de Tecido", "Conserto", "Preparo para Encantamento"] }
 };
+
+
+// Configuração de Treinamento de Atributos ---
+// Formato: { max: ValorMaximoInclusivo, meta: XP, diff: "Dificuldade" }
+export const TREINO_ATRIBUTO_RANGES = [
+    { max: 5,  meta: 10, diff: "Muito Fácil" },
+    { max: 11, meta: 20, diff: "Muito Fácil" },
+    { max: 16, meta: 30, diff: "Fácil" },
+    { max: 19, meta: 60, diff: "Médio" },
+    { max: 30, meta: 100, diff: "Difícil" } // Fallback para 20+ (Deuses/Épicos) - Gemini meteu isso aqui slc caba eh piroca da cabeça
+];
 
 /**
  * Conversão de Consequências em Acertos
@@ -48,6 +68,37 @@ export const VALOR_ACERTOS = {
     "ALTA_FALHA": 0,
     "GRANDE_FALHA": 0
 };
+
+// Tabela de Línguas e Scripts ---
+// Chave: Nome da Língua (Display) | Valor: Nome do Script (Alfabeto)
+export const LANGUAGES_DATA = {
+    "Common": "Common",
+    "Dwarvish": "Dwarvish",
+    "Elvish": "Elvish",
+    "Giant": "Dwarvish",
+    "Gnomish": "Dwarvish",
+    "Goblin": "Dwarvish",
+    "Halfling": "Common",
+    "Orc": "Dwarvish",
+    "Aarakocra": "Dwarvish", // Corrigido typo "Aaracokra" para padrão D&D
+    "Abyssal": "Infernal",
+    "Celestial": "Celestial",
+    "Draconic": "Draconic",
+    "Gith": "Tir'su",
+    "Deep Speech": null, // Sem script
+    "Gnoll": "Infernal",
+    "Infernal": "Infernal",
+    "Aquan": "Dwarvish",
+    "Auran": "Dwarvish",
+    "Ignan": "Dwarvish",
+    "Terran": "Dwarvish",
+    "Sylvan": "Elvish",
+    "Undercommon": "Elvish",
+    "Druidic": "Druidic",
+    "Thieve's Cant": "Thieve's Cant"
+};
+
+//Lista de tabelas específicas das profissões
 export const ALQUIMISTA_POCAO = {
     "Comum":      { complexidade: "Simples",                dificuldade: "Muito Fácil" },
     "Incomum":    { complexidade: "Simples",                dificuldade: "Fácil" },
@@ -289,5 +340,25 @@ export const PREPARO_ENCANTAMENTO = {
         "Moderadamente Complexo": 13,
         "Complexo": 11,
         "Muito Complexo": 9
+    }
+};
+
+// Qualidade da Refeição (Cozinheiro) -> XP
+export const XP_COZINHEIRO = {
+    "sem_proficiencia": { // Multiplier < 1
+        "Squalid": 0, "Poor": 0.5, "Modest": 1, "Comfortable": 1.5, "Wealthy": 2, "Aristocrat": 2.5, "Banquete": 3
+    },
+    "proficiente": { // Multiplier >= 1
+        "Squalid": 0, "Poor": 0, "Modest": 0, "Comfortable": 0.5, "Wealthy": 1, "Aristocrat": 2, "Banquete": 3
+    }
+};
+
+// Tipo de Veneno Coletado (Sicário) -> XP (Apenas se doses > 0)
+export const XP_VENENO_COLETA = {
+    "sem_proficiencia": { 
+        "Veneno Básico": 2, "Veneno Avançado": 8, "Veneno de Dragão Verde": 12 
+    },
+    "proficiente": { 
+        "Veneno Básico": 1, "Veneno Avançado": 5, "Veneno de Dragão Verde": 10 
     }
 };

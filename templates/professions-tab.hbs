@@ -51,6 +51,17 @@
                         </div>
                     </div>
 
+                    <div class="disadvantage-wrapper">
+                        <span class="advantage-label-text">Desvantagem:</span>
+                        <div class="toggle-disadvantage" title="Desvantagem Situacional">
+                            <input type="checkbox" id="cook-disadv-{{this.nome}}" class="cook-disadv-checkbox" {{#if this.cookParams.usoDesvantagem}}checked{{/if}}>
+                            <label for="cook-disadv-{{this.nome}}" class="disadv-label">
+                                <i class="far fa-circle unchecked-icon"></i>
+                                <i class="fas fa-circle checked-icon"></i>
+                            </label>
+                        </div>
+                    </div>
+
                     <input type="text" class="cook-bonus" placeholder="+0" value="{{this.cookParams.bonusSituacional}}" title="Bônus (ex: +2, +1d4)">
                 </div>
 
@@ -71,6 +82,9 @@
                                 <span class="meal-name"><strong>{{this.nome}}</strong></span>
                                 <span class="meal-result">{{{this.resultado}}}</span>
                             </div>
+                            {{#if this.podeGanharXP}}
+                                <a class="add-xp-btn xp-meal-btn" title="Adicionar XP ao Treinamento"><i class="fas fa-arrow-up"></i> XP</a>
+                            {{/if}}
                             <a class="delete-meal" title="Consumir/Descartar"><i class="fas fa-trash"></i></a>
                         </div>
                         {{/each}}
@@ -166,11 +180,17 @@
                                 {{/if}}
                                 <a class="edit-project-name" title="Editar Nome"><i class="fas fa-pencil-alt"></i></a>
                             </div>
+                            <div class="card-actions">
+                        {{!-- NOVO: Botão de Adicionar XP (Se elegível) --}}
+                        {{#if this.podeGanharXP}}
+                            <a class="add-xp-btn" title="Adicionar XP ao Treinamento"><i class="fas fa-arrow-up"></i> XP</a>
+                        {{/if}}
                             <a class="delete-project" title="Excluir Projeto"><i class="fas fa-trash"></i></a>
                         </div>
+                    </div>
 
-                        {{!-- NOVO: Dropdown de Bioma DO CARD (Cartógrafo Rascunho) --}}
-                        {{#if this.isRascunho}}
+                        {{!-- Dropdown de Bioma DO CARD (Cartógrafo Rascunho) --}}
+                        {{#if (or this.isRascunho this.isHerbalista)}}
                         <div class="card-biome-wrapper">
                             <select class="card-biome-select">
                                 <option value="" disabled {{#unless this.bioma}}selected{{/unless}}>Selecione o Bioma</option>
@@ -220,6 +240,17 @@
                                 <div class="toggle-advantage" title="Vantagem Situacional">
                                     <input type="checkbox" id="adv-{{this._index}}" class="adv-checkbox" {{#if this.usoVantagem}}checked{{/if}} {{#if this.isQuebrada}}disabled{{/if}} {{#if this.isConcluido}}disabled{{/if}}>
                                     <label for="adv-{{this._index}}" class="adv-label">
+                                        <i class="far fa-circle unchecked-icon"></i>
+                                        <i class="fas fa-circle checked-icon"></i>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="disadvantage-wrapper">
+                                <span class="advantage-label-text">Desvantagem:</span>
+                                <div class="toggle-disadvantage" title="Desvantagem Situacional">
+                                    <input type="checkbox" id="disadv-{{this._index}}" class="disadv-checkbox" {{#if this.usoDesvantagem}}checked{{/if}} {{#if this.isQuebrada}}disabled{{/if}} {{#if this.isConcluido}}disabled{{/if}}>
+                                    <label for="disadv-{{this._index}}" class="disadv-label">
                                         <i class="far fa-circle unchecked-icon"></i>
                                         <i class="fas fa-circle checked-icon"></i>
                                     </label>
